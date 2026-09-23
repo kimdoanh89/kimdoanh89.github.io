@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Open Key Chain Manager — CMK</title>
+<meta name="description" content="Case study: Customer-Managed-Keys (CMK), the key management service layer of the open-source Open Key Chain Manager project." />
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <a class="back-link" href="../index.html">&larr; Doanh Luong</a>
+
+    <header class="hero">
+      <span class="project-role">Core Contributor</span>
+      <h1>Open Key Chain Manager — CMK</h1>
+      <p class="tagline">Customer-Managed-Keys (CMK) is the key management service layer of Open Key Chain Manager, an open-source project that lets customers keep control over the master key protecting every subordinate key in their encryption hierarchy.</p>
+      <div class="links" style="margin-top: 6px;">
+        <a href="https://github.com/openkcm/cmk" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+      </div>
+    </header>
+
+    <section>
+      <h2>Overview</h2>
+      <p class="body">
+        CMK gives customers Bring Your Own Key (BYOK) control over the master key in a cryptographic key hierarchy,
+        and the ability to revoke data access outright by revoking that master key — the same problem space as the
+        HYOK/BYOK enterprise encryption work at SAP, applied here as a standalone open-source service. It's a
+        multi-tenant, API-first Go service, deployed as containers on Kubernetes, with a CLI toolset for operating
+        tenants and background jobs.
+      </p>
+    </section>
+
+    <section>
+      <h2>Architecture</h2>
+      <div class="callout">
+        <p class="body">
+          A Go service backed by PostgreSQL with per-tenant schema and data isolation. Asynchronous work — key
+          rotation, background jobs, notifications — flows through the Orbital message broker over AMQP. The API
+          surface is OpenAPI-first: endpoints are specified up front and Go clients are generated from the spec with
+          <code>oapi-codegen</code>. Clients authenticate over mTLS. Locally and in CI, the whole stack runs on a K3d
+          Kubernetes cluster provisioned via Helm charts, with Docker as the container runtime.
+        </p>
+      </div>
+      <div class="tag-row" style="margin-top: 14px;">
+        <span class="tag">Go</span><span class="tag">PostgreSQL</span><span class="tag">GORM</span><span class="tag">Kubernetes</span><span class="tag">Helm</span><span class="tag">K3d</span><span class="tag">Docker</span><span class="tag">OpenAPI / oapi-codegen</span><span class="tag">Orbital / AMQP</span><span class="tag">mTLS</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Notable design decisions</h2>
+
+      <div class="decision">
+        <h3>Expand &amp; contract migrations</h3>
+        <p>Destructive schema changes ship in two steps across releases instead of one, so a rolling deployment is never running old code against a schema that has already dropped what it expects. Schema migrations run as blocking Kubernetes Jobs; data migrations are separated out and run in parallel, since they don't need to gate the schema change.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Standardized error mapping</h3>
+        <p>Internal errors are mapped centrally to structured API responses with the correct HTTP status codes, rather than each handler deciding its own error shape — keeping the API surface consistent as the service grows.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Plugin-based extension points</h3>
+        <p>System-information and event-processing implementations are pluggable, so integrations can be swapped without changes to the core service logic.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Context-based structured logging</h3>
+        <p>Logging goes through <code>slogctx</code>, which injects request context automatically — tenant, request ID, and similar fields land in every log line for a request without each call site having to thread them through by hand.</p>
+      </div>
+    </section>
+
+    <footer>
+      &copy; <span id="year"></span> Doanh Luong. Deployed with GitHub Pages.
+    </footer>
+  </div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

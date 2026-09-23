@@ -10,14 +10,13 @@
 </head>
 <body>
   <div class="topnav">
-    <div class="topnav-inner">
+    <div class="topnav-bar">
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">&#9776;</button>
       <a class="brand" href="../index.html">Doanh Luong</a>
-      <nav>
-        <a href="../index.html#experience">Experience</a>
-        <a href="../index.html#skills">Skills</a>
-        <a href="../index.html#projects">Projects</a>
-      </nav>
     </div>
+    <nav class="nav-menu" id="navMenu" hidden>
+      <a href="../index.html#projects">Projects</a>
+    </nav>
   </div>
   <div class="wrap">
     <a class="back-link" href="../index.html">&larr; Back to portfolio</a>
@@ -88,6 +87,20 @@
   </div>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    var navToggle = document.getElementById('navToggle');
+    var navMenu = document.getElementById('navMenu');
+    navToggle.addEventListener('click', function () {
+      var isOpen = !navMenu.hidden;
+      navMenu.hidden = isOpen;
+      navToggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+    navMenu.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        navMenu.hidden = true;
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
   </script>
 </body>
 </html>

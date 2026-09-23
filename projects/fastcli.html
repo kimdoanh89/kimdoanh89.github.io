@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>fastcli</title>
+<meta name="description" content="Case study: fastcli, a Nornir-based CLI for automated multi-vendor routing-protocol configuration." />
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="../style.css" />
+<script>
+  (function () {
+    try {
+      var stored = localStorage.getItem('theme');
+      if (stored === 'light' || stored === 'dark') {
+        document.documentElement.setAttribute('data-theme', stored);
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+  <div class="topnav">
+    <div class="topnav-bar">
+      <div class="topnav-left">
+        <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">&#9776;</button>
+        <a class="brand" href="../index.html">Doanh Luong</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">&#127769;</button>
+    </div>
+    <nav class="nav-menu" id="navMenu" hidden>
+      <a href="../index.html#projects">Projects</a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <a class="back-link" href="../index.html">&larr; Back to portfolio</a>
+
+    <header class="hero">
+      <span class="project-role">Creator</span>
+      <h1>fastcli</h1>
+      <p class="tagline">fastcli is a CLI tool, built on Nornir 3.0, for automatically generating and deploying routing-protocol configuration across multiple network devices at once &mdash; published on Cisco DevNet CodeExchange.</p>
+      <div class="links" style="margin-top: 6px;">
+        <a href="https://github.com/kimdoanh89/fastcli" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+      </div>
+    </header>
+
+    <section>
+      <h2>Overview</h2>
+      <p class="body">
+        Network engineers configuring BGP, OSPF, EIGRP or RIP across a fleet of devices normally hand-write or
+        template CLI commands per device. fastcli replaces that with a declarative model: describe the desired
+        network state once in YAML, and the tool generates and pushes the matching configuration to every targeted
+        device over SSH. It supports Cisco IOS, NX-OS and IOS-XR, and ships with a companion web dashboard for
+        project management and monitoring alongside the CLI.
+      </p>
+    </section>
+
+    <section>
+      <h2>Architecture</h2>
+      <div class="callout">
+        <p class="body">
+          Nornir 3.0 is the orchestration core: it reads inventory from <code>hosts.yaml</code> and
+          <code>groups.yaml</code>, then fans out tasks across the matching devices. Device connections and command
+          delivery go through Netmiko and NAPALM, which abstract the per-vendor CLI syntax differences. Commands are
+          organized by routing protocol (<code>fastcli bgp configure</code>, <code>fastcli ospf configure</code>, and
+          so on), each generating the protocol-specific configuration block for every device in scope. A
+          <code>fastcli show facts</code> command and pyATS integration let you capture device state as a golden
+          configuration and verify deployments against it.
+        </p>
+      </div>
+      <div class="tag-row" style="margin-top: 14px;">
+        <span class="tag">Python</span><span class="tag">Nornir</span><span class="tag">Netmiko</span><span class="tag">NAPALM</span><span class="tag">pyATS</span><span class="tag">YAML</span><span class="tag">Cisco IOS / NX-OS / IOS-XR</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Notable design decisions</h2>
+
+      <div class="decision">
+        <h3>Inventory-driven, declarative configuration</h3>
+        <p>Network state — interfaces, ASNs, BGP neighbors, OSPF/EIGRP networks — lives entirely in <code>hosts.yaml</code>, not scattered across imperative scripts. Re-running a command against the same inventory produces the same result, so deployments are idempotent by construction.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Group-based targeting</h3>
+        <p>Devices are organized into logical groups (bgp, ospf, eigrp, rip) so a command can target exactly the devices that need it, instead of every push touching the whole fleet.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Protocol-aware commands, not generic templating</h3>
+        <p>The CLI understands routing-protocol specifics directly — eBGP vs. iBGP, OSPF stub and Not-So-Stubby-Area configuration — rather than pushing that logic into user-maintained Jinja templates.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Golden-config verification via pyATS</h3>
+        <p>Beyond pushing configuration, fastcli can capture a known-good device state and verify later deployments against it, closing the loop between "config applied" and "config correct."</p>
+      </div>
+    </section>
+
+    <footer>
+      &copy; <span id="year"></span> Doanh Luong. Deployed with GitHub Pages.
+    </footer>
+  </div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    var navToggle = document.getElementById('navToggle');
+    var navMenu = document.getElementById('navMenu');
+    navToggle.addEventListener('click', function () {
+      var isOpen = !navMenu.hidden;
+      navMenu.hidden = isOpen;
+      navToggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+    navMenu.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        navMenu.hidden = true;
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    var themeToggle = document.getElementById('themeToggle');
+    function currentTheme() {
+      var attr = document.documentElement.getAttribute('data-theme');
+      if (attr === 'light' || attr === 'dark') return attr;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function updateThemeIcon() {
+      themeToggle.textContent = currentTheme() === 'dark' ? '☀️' : '🌙';
+    }
+    themeToggle.addEventListener('click', function () {
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      updateThemeIcon();
+    });
+    updateThemeIcon();
+  </script>
+</body>
+</html>

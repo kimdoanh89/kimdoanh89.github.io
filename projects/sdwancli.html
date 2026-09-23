@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>sdwancli</title>
+<meta name="description" content="Case study: sdwancli, a Python CLI wrapping Cisco SD-WAN vManage's REST API." />
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="../style.css" />
+<script>
+  (function () {
+    try {
+      var stored = localStorage.getItem('theme');
+      if (stored === 'light' || stored === 'dark') {
+        document.documentElement.setAttribute('data-theme', stored);
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+  <div class="topnav">
+    <div class="topnav-bar">
+      <div class="topnav-left">
+        <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">&#9776;</button>
+        <a class="brand" href="../index.html">Doanh Luong</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">&#127769;</button>
+    </div>
+    <nav class="nav-menu" id="navMenu" hidden>
+      <a href="../index.html#projects">Projects</a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <a class="back-link" href="../index.html">&larr; Back to portfolio</a>
+
+    <header class="hero">
+      <span class="project-role">Creator</span>
+      <h1>sdwancli</h1>
+      <p class="tagline">sdwancli wraps Cisco SD-WAN vManage's REST API in a command-line tool, mapping familiar vEdge CLI operations onto Python so operators can manage an SD-WAN fabric without hand-rolling API calls &mdash; published on Cisco DevNet CodeExchange.</p>
+      <div class="links" style="margin-top: 6px;">
+        <a href="https://github.com/kimdoanh89/sdwan-python-rest-api" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+      </div>
+    </header>
+
+    <section>
+      <h2>Overview</h2>
+      <p class="body">
+        Cisco SD-WAN's vManage controller exposes a REST API, but driving it directly means hand-building HTTP
+        requests for every operation. sdwancli gives network operators a CLI they already know how to think in:
+        commands map onto the vEdge operational vocabulary — devices, templates, control-plane state — instead of
+        raw API endpoints, targeting vManage 20.3.1.
+      </p>
+    </section>
+
+    <section>
+      <h2>Architecture</h2>
+      <div class="callout">
+        <p class="body">
+          A <code>vmanage/</code> module owns all REST interaction and is organized by command domain rather than by
+          endpoint: device management and monitoring, feature and device template CRUD, BFD session and control-plane
+          connection tracking, IPsec and OMP overlay metrics, and SLA class definitions. Connection details and
+          credentials live in <code>vmanage/constants.py</code>, kept separate from the command logic so the same CLI
+          works against a local lab, Cisco's AlwaysOn Sandbox (read-only), or a Reservable Sandbox without code
+          changes. The project installs as a proper Python package via <code>pip install -e .</code>.
+        </p>
+      </div>
+      <div class="tag-row" style="margin-top: 14px;">
+        <span class="tag">Python</span><span class="tag">Click</span><span class="tag">Cisco vManage REST API</span><span class="tag">BFD</span><span class="tag">OMP</span><span class="tag">IPsec</span><span class="tag">SLA Classes</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Notable design decisions</h2>
+
+      <div class="decision">
+        <h3>Config and credentials separated from code</h3>
+        <p>Environment details live in one constants module, not scattered through command logic — so pointing the same CLI at a different vManage instance (lab, sandbox, production) is a config change, not a code change.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Commands mirror vEdge vocabulary</h3>
+        <p>Rather than exposing the REST API's own shape, commands map onto the operational terms a network engineer already uses on vEdge devices, so existing CLI fluency transfers directly instead of requiring a new mental model for the API.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Organized by network concern, not by endpoint</h3>
+        <p>Command groups follow how operators reason about the fabric — devices, templates, control plane, overlay (IPsec/OMP), SLA — rather than mirroring vManage's internal API structure one-to-one.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Packaged, not scripted</h3>
+        <p>Installable via <code>pip install -e .</code> rather than a folder of standalone scripts, so it drops into an operator's existing Python tooling and can be versioned like any other dependency.</p>
+      </div>
+    </section>
+
+    <footer>
+      &copy; <span id="year"></span> Doanh Luong. Deployed with GitHub Pages.
+    </footer>
+  </div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    var navToggle = document.getElementById('navToggle');
+    var navMenu = document.getElementById('navMenu');
+    navToggle.addEventListener('click', function () {
+      var isOpen = !navMenu.hidden;
+      navMenu.hidden = isOpen;
+      navToggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+    navMenu.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        navMenu.hidden = true;
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    var themeToggle = document.getElementById('themeToggle');
+    function currentTheme() {
+      var attr = document.documentElement.getAttribute('data-theme');
+      if (attr === 'light' || attr === 'dark') return attr;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function updateThemeIcon() {
+      themeToggle.textContent = currentTheme() === 'dark' ? '☀️' : '🌙';
+    }
+    themeToggle.addEventListener('click', function () {
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      updateThemeIcon();
+    });
+    updateThemeIcon();
+  </script>
+</body>
+</html>

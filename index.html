@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kim Doanh</title>
-<meta name="description" content="Portfolio and links for Kim Doanh." />
+<title>Doanh Luong — Senior Software Engineer</title>
+<meta name="description" content="Portfolio of Doanh Luong, Senior Software Engineer at SAP — cloud-native key management, encryption services, and distributed systems." />
 <link rel="icon" href="data:," />
 <style>
   :root {
@@ -44,7 +44,7 @@
     -webkit-font-smoothing: antialiased;
   }
   .wrap {
-    max-width: 760px;
+    max-width: 780px;
     margin: 0 auto;
     padding: 64px 20px 96px;
   }
@@ -52,67 +52,151 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    margin-bottom: 56px;
+    margin-bottom: 44px;
   }
   .avatar {
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent), #a78bfa);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 700;
     color: #0b0d10;
   }
   h1 {
-    font-size: 2rem;
+    font-size: 1.9rem;
     margin: 0;
     letter-spacing: -0.02em;
   }
+  .role-line {
+    color: var(--text);
+    font-size: 1.05rem;
+    margin: 2px 0 0;
+  }
+  .location-line {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin: 2px 0 0;
+  }
   .tagline {
     color: var(--muted);
-    font-size: 1.05rem;
-    margin: 0;
-    max-width: 52ch;
+    font-size: 1.02rem;
+    line-height: 1.55;
+    margin: 8px 0 0;
+    max-width: 62ch;
   }
   section {
-    margin-bottom: 48px;
+    margin-bottom: 44px;
   }
   h2 {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--muted);
-    margin: 0 0 16px;
+    margin: 0 0 18px;
   }
   p.body {
-    line-height: 1.6;
+    line-height: 1.65;
     color: var(--text);
-    max-width: 60ch;
+    max-width: 64ch;
+    margin: 0;
   }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
+
+  .entry {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 0;
+    border-top: 1px solid var(--border);
   }
-  .card {
-    background: var(--bg-elev);
+  .entry:first-of-type { border-top: none; padding-top: 0; }
+  .entry-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .entry-title {
+    font-size: 1.02rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .entry-org { color: var(--accent); font-weight: 500; }
+  .entry-dates {
+    color: var(--muted);
+    font-size: 0.82rem;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .entry ul {
+    margin: 4px 0 0;
+    padding-left: 18px;
+    color: var(--muted);
+    font-size: 0.93rem;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .entry ul li::marker { color: var(--accent); }
+
+  .skill-group {
+    margin-bottom: 14px;
+  }
+  .skill-group:last-child { margin-bottom: 0; }
+  .skill-group-label {
+    font-size: 0.82rem;
+    color: var(--text);
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 999px;
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
+    background: var(--bg-elev);
+    color: var(--muted);
   }
-  .card h3 {
-    margin: 0 0 6px;
-    font-size: 1rem;
+
+  .cert-list, .edu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  .card p {
+  .cert-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.92rem;
+    flex-wrap: wrap;
+  }
+  .cert-date { color: var(--muted); font-size: 0.82rem; white-space: nowrap; }
+
+  .edu-item h3 {
+    margin: 0 0 2px;
+    font-size: 0.98rem;
+  }
+  .edu-item .entry-dates { display: block; margin-bottom: 4px; }
+  .edu-item p {
     margin: 0;
     color: var(--muted);
     font-size: 0.9rem;
     line-height: 1.5;
   }
+
   .links {
     display: flex;
     flex-wrap: wrap;
@@ -135,6 +219,11 @@
     border-color: var(--accent);
     transform: translateY(-1px);
   }
+  .note {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
   footer {
     color: var(--muted);
     font-size: 0.85rem;
@@ -146,33 +235,174 @@
 <body>
   <div class="wrap">
     <header class="hero">
-      <div class="avatar">KD</div>
-      <h1>Kim Doanh</h1>
-      <p class="tagline">Builder working across software, data, and product. This page is a living home base for projects and links.</p>
+      <div class="avatar">DL</div>
+      <h1>Doanh Luong</h1>
+      <p class="role-line">Senior Software Engineer, SAP</p>
+      <p class="location-line">Rugby, UK (commutable to London)</p>
+      <p class="tagline">Building secure, cloud-native key-management systems for thousands of enterprise tenants — BYOK/HYOK encryption, distributed schedulers, and compliance infrastructure across AWS, Azure, GCP and Kubernetes. PhD in networking protocols before industry.</p>
+      <div class="links" style="margin-top: 6px;">
+        <a href="mailto:kimdoanh89@gmail.com">Email</a>
+        <a href="https://linkedin.com/in/doanhkimluong" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/kimdoanh89" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </header>
 
     <section>
-      <h2>About</h2>
+      <h2>Summary</h2>
       <p class="body">
-        Welcome — this is a simple landing page, published straight from a git repository via GitHub Pages.
-        Update <code>index.html</code> and push to refresh the content, or ask an assistant to help evolve it further.
+        Senior Software Engineer with 5+ years building cloud-native distributed systems at SAP, mostly around secure key
+        management and encryption services for thousands of enterprise tenants. Day-to-day work is customer-data-protection
+        infrastructure: Bring Your Own Key / Hold Your Own Key (BYOK/HYOK) cryptographic key lifecycle management,
+        multi-stage approval workflows for security-sensitive operations, and audit/compliance services, running across
+        AWS, Azure and GCP on Kubernetes. Before industry, spent 4 years in postdoctoral research on networking protocols
+        (PhD in Multipath TCP) and applied machine learning — the source of a protocol-level, systems approach to scale,
+        resilience and security. Works mainly in Go, Python and C++, partnering with product, security and QA to get things
+        from design into production.
       </p>
     </section>
 
     <section>
-      <h2>Highlights</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Projects</h3>
-          <p>A place to showcase things that have been built — swap this in with real project cards.</p>
+      <h2>Experience</h2>
+
+      <div class="entry">
+        <div class="entry-head">
+          <p class="entry-title">Senior Software Engineer &middot; <span class="entry-org">SAP, UK</span></p>
+          <span class="entry-dates">Jan 2024 – Present</span>
         </div>
-        <div class="card">
-          <h3>Writing</h3>
-          <p>Notes, posts, or case studies can link out from here.</p>
+        <ul>
+          <li>Defined the service architecture and gRPC contracts for HYOK/BYOK enterprise encryption services covering thousands of enterprise tenants, building reusable interfaces other SAP product teams now build on.</li>
+          <li>Architected a distributed scheduler/worker framework for cryptographic key lifecycle management, certificate rotation and platform maintenance, built so each component scales independently across pods.</li>
+          <li>Designed a multi-stage "6-eyes" approval architecture for security-sensitive cryptographic operations like key deletion, including policy-driven automation, voting/threshold logic, notification workflows and tenant-level governance.</li>
+          <li>Led the Audit Log Service integration across cloud landscapes (Canary, Staging, Production), setting implementation standards and deployment strategy and owning end-to-end validation for compliance and data-protection auditing.</li>
+          <li>Wrote the architecture specs and implementation guidance for AWS-based HYOK integrations; selected HSM protection level for BYOK key material in AWS/GCP KMS and integrated with Fortanix for HYOK. Main technical point of contact between engineering, product, QA and architecture.</li>
+          <li>Provides on-call coverage and leads incident triage/remediation for the KMS platform, using Grafana, Prometheus and OpenTelemetry for monitoring, alerting and distributed tracing.</li>
+          <li>Core contributor to the open-source Open Key Chain Manager project, extending its enterprise key-management and secure integration capabilities.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <p class="entry-title">Software Engineer &middot; <span class="entry-org">SAP, UK</span></p>
+          <span class="entry-dates">Jan 2021 – Jan 2024</span>
         </div>
-        <div class="card">
-          <h3>Now</h3>
-          <p>What's currently in focus — update this section as priorities shift.</p>
+        <ul>
+          <li>Designed and delivered the core architecture for SAP's Key Management Service (KMS): scalable REST APIs, cryptographic key lifecycle management and cloud-native integrations across AWS, Azure and GCP.</li>
+          <li>Built the authentication/authorization architecture for a multi-tenant SaaS platform, integrating OAuth2 and OpenID Connect with SAP's Identity Service.</li>
+          <li>Built fault-tolerant asynchronous workflows for key backup and recovery using Python, Celery and AWS SQS, improving scalability and resilience for security-critical operations.</li>
+          <li>Delivered a tiered Data Retention component moving audit data from Aurora (hot) to S3/Athena/Glue (cold), cutting retrieval time by orders of magnitude for thousands of tenants and reducing storage costs.</li>
+          <li>Built secure data-export services for large-scale tenant data extraction, with cloud object storage integration and access controlled through pre-signed URLs.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <p class="entry-title">Postdoctoral Research Fellow &middot; <span class="entry-org">University of Bradford, UK</span></p>
+          <span class="entry-dates">Apr 2018 – Jan 2021</span>
+        </div>
+        <ul>
+          <li>Designed Simulated Annealing and Genetic Algorithm solutions for network link selection, improving application satisfaction by 15% and cutting access failures by 26%; used Deep Reinforcement Learning to cut controller-placement runtime by 65% at 99.3% accuracy.</li>
+          <li>Published fastcli and sdwancli on Cisco DevNet CodeExchange — Python libraries for automating routing-protocol configuration (BGP, OSPF, EIGRP) and SD-WAN management via REST APIs.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <p class="entry-title">Postdoctoral Research Associate &middot; <span class="entry-org">University of Siena, Italy</span></p>
+          <span class="entry-dates">Apr 2017 – Apr 2018</span>
+        </div>
+        <ul>
+          <li>Implemented Random Linear Network Coding (RLNC) in a satellite transport-layer stack (C++), improving power gains by 40%; combined with Multipath TCP, raised TCP goodput by 80% over unreliable satellite links.</li>
+          <li>Designed a multi-stage gateway scheduler architecture for an ESA-funded satellite communications project.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Technical Skills</h2>
+      <div class="skill-group">
+        <p class="skill-group-label">Security &amp; Cryptography</p>
+        <div class="tag-row">
+          <span class="tag">BYOK/HYOK</span><span class="tag">HSM</span><span class="tag">AWS KMS</span><span class="tag">GCP KMS</span><span class="tag">Fortanix</span><span class="tag">Key lifecycle management</span><span class="tag">OAuth2</span><span class="tag">OpenID Connect</span><span class="tag">mTLS</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-label">Programming Languages</p>
+        <div class="tag-row">
+          <span class="tag">Go</span><span class="tag">Python</span><span class="tag">C++</span><span class="tag">JavaScript</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-label">Distributed Systems</p>
+        <div class="tag-row">
+          <span class="tag">gRPC</span><span class="tag">Scheduler/worker frameworks</span><span class="tag">Event-driven processing</span><span class="tag">Celery</span><span class="tag">AWS SQS</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-label">Cloud &amp; Infrastructure</p>
+        <div class="tag-row">
+          <span class="tag">AWS</span><span class="tag">Azure</span><span class="tag">GCP</span><span class="tag">Kubernetes</span><span class="tag">CRDs / Operators</span><span class="tag">Docker</span><span class="tag">Microservices</span><span class="tag">Ansible</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-label">Observability</p>
+        <div class="tag-row">
+          <span class="tag">Grafana</span><span class="tag">Prometheus</span><span class="tag">OpenTelemetry</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-label">Databases</p>
+        <div class="tag-row">
+          <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">AWS Aurora</span><span class="tag">S3 / Athena / Glue</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-label">Networking</p>
+        <div class="tag-row">
+          <span class="tag">MPTCP</span><span class="tag">RLNC</span><span class="tag">BGP</span><span class="tag">OSPF</span><span class="tag">EIGRP</span><span class="tag">SD-WAN</span><span class="tag">SDN / OpenFlow</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Open Source</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <p class="entry-title">Open Key Chain Manager</p>
+        </div>
+        <p class="body" style="color: var(--muted); font-size: 0.93rem;">Core contributor — extending its enterprise key-management and secure integration capabilities.</p>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <p class="entry-title">fastcli &amp; sdwancli</p>
+        </div>
+        <p class="body" style="color: var(--muted); font-size: 0.93rem;">Published on Cisco DevNet CodeExchange — Python libraries for automating routing-protocol configuration (BGP, OSPF, EIGRP) and SD-WAN management via REST APIs.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Certifications</h2>
+      <ul class="cert-list">
+        <li><span>AWS Certified Generative AI Developer – Professional</span><span class="cert-date">Jul 2026</span></li>
+        <li><span>AWS Certified Solutions Architect – Professional</span><span class="cert-date">Dec 2023</span></li>
+        <li><span>AWS Certified Solutions Architect – Associate</span><span class="cert-date">Feb 2023</span></li>
+        <li><span>AWS Certified Developer – Associate</span><span class="cert-date">Aug 2023</span></li>
+        <li><span>AWS Cloud Quest: Generative AI Architect – Trained</span><span class="cert-date">Feb 2026</span></li>
+        <li><span>Linux Foundation Kubernetes Fundamentals</span><span class="cert-date">Mar 2020</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <div class="edu-list">
+        <div class="edu-item">
+          <h3>PhD, Telecommunications — University of Siena, Italy</h3>
+          <span class="entry-dates">Dec 2012 – Feb 2017</span>
+          <p>Full scholarship. Thesis: Combining Multi-Path Protocols and Network Coding in Mobile Satellite Systems.</p>
+        </div>
+        <div class="edu-item">
+          <h3>B.S.E., Electronics and Telecommunications — Hanoi University of Science and Technology, Vietnam</h3>
+          <span class="entry-dates">Aug 2007 – Jul 2012</span>
+          <p>Ranked 5/507 in the Department; Certificate of Merit for Excellent Graduation.</p>
         </div>
       </div>
     </section>
@@ -182,19 +412,11 @@
       <div class="links">
         <a href="https://claude.ai/artifact/U8165y3hWyXyZbnRxnXsaL" target="_blank" rel="noopener">CV Redline &rarr;</a>
       </div>
-      <p class="tagline" style="margin-top: 10px; font-size: 0.85rem;">A private Claude-powered CV review tool. The link is here as a personal bookmark &mdash; it's only accessible when signed in as its owner.</p>
-    </section>
-
-    <section>
-      <h2>Elsewhere</h2>
-      <div class="links">
-        <a href="mailto:kimdoanh89@gmail.com">Email</a>
-        <a href="https://github.com/kimdoanh89" target="_blank" rel="noopener">GitHub</a>
-      </div>
+      <p class="note">A private Claude-powered CV review tool. The link is here as a personal bookmark &mdash; it's only accessible when signed in as its owner.</p>
     </section>
 
     <footer>
-      &copy; <span id="year"></span> Kim Doanh. Deployed with GitHub Pages.
+      &copy; <span id="year"></span> Doanh Luong. Deployed with GitHub Pages.
     </footer>
   </div>
   <script>

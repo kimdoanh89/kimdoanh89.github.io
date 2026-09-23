@@ -55,9 +55,16 @@ body {
   padding: 14px 20px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 14px;
 }
-.nav-toggle {
+.topnav-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.nav-toggle,
+.theme-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -72,7 +79,8 @@ body {
   cursor: pointer;
   padding: 0;
 }
-.nav-toggle:hover { background: var(--nav-bg-elev); }
+.nav-toggle:hover,
+.theme-toggle:hover { background: var(--nav-bg-elev); }
 .topnav .brand {
   color: var(--nav-text);
   text-decoration: none;

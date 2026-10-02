@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CMK Dashboard</title>
+<meta name="description" content="Case study: a local dashboard that orchestrates a Claude Code agent through a 5-stage implement/test/verify loop against Jira tickets." />
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="../style.css" />
+<script>
+  (function () {
+    try {
+      var stored = localStorage.getItem('theme');
+      if (stored === 'light' || stored === 'dark') {
+        document.documentElement.setAttribute('data-theme', stored);
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+  <div class="topnav">
+    <div class="topnav-bar">
+      <div class="topnav-left">
+        <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">&#9776;</button>
+        <a class="brand" href="../index.html">Doanh Luong</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">&#127769;</button>
+    </div>
+    <nav class="nav-menu" id="navMenu" hidden>
+      <a href="../index.html#projects">Projects</a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <a class="back-link" href="../index.html#projects">&larr; Back to Projects</a>
+
+    <header class="hero">
+      <span class="project-role">Creator</span>
+      <h1>CMK Dashboard</h1>
+      <p class="tagline">A local developer dashboard that turns a Jira ticket into a fully orchestrated Claude Code agent run: plan generation with a review gate, then an autonomous implement &rarr; test &rarr; verify loop, streamed live over SSE.</p>
+    </header>
+
+    <section>
+      <h2>Overview</h2>
+      <p class="body">
+        Driving an AI coding agent through a real ticket end-to-end normally means babysitting a terminal. CMK
+        Dashboard turns that into a managed session: point it at a Jira ticket (or start standalone), and it fetches
+        the ticket context, generates an implementation plan, and then runs a Claude Code agent through a 5-stage
+        loop &mdash; fetch/refine context, plan, implement &amp; test, verify &amp; replan, done &mdash; with every
+        stage transition, tool call and test result streamed to the UI as it happens. Each session gets its own git
+        worktree and branch, so the agent's work never touches the active checkout, and sessions can be stopped and
+        resumed without losing context, since resuming reuses the same Claude session ID and worktree.
+      </p>
+    </section>
+
+    <section>
+      <h2>Architecture</h2>
+      <div class="callout">
+        <p class="body">
+          A React 18 / Vite frontend talks to an Express backend over REST and Server-Sent Events. The backend's
+          orchestrator is a LangGraph finite-state machine with interrupt support: the 5 stages are graph nodes, and
+          the plan-review gate is a server-side pause the graph itself enforces, not a UI-level lock. Each stage spawns
+          the <code>claude</code> CLI as a subprocess with <code>--output-format stream-json</code>, giving the agent
+          full Claude Code tool access (Bash, Read, Edit, Write) rather than re-implementing a tool loop against the
+          API directly. SSE events are buffered in memory during a run and flushed to PostgreSQL (via Prisma) on
+          completion or interrupt, so the full conversation thread can be reconstructed on reload. OAuth-based
+          connectors (e.g. SAP Jira) register MCP servers into the local Claude config so the agent has authenticated
+          access to external services during a run.
+        </p>
+      </div>
+      <div class="tag-row" style="margin-top: 14px;">
+        <span class="tag">React 18</span><span class="tag">Vite</span><span class="tag">Tailwind CSS</span><span class="tag">Express.js</span><span class="tag">Node.js (ESM)</span><span class="tag">LangGraph</span><span class="tag">Claude Code CLI</span><span class="tag">PostgreSQL 16</span><span class="tag">Prisma 6</span><span class="tag">Server-Sent Events</span><span class="tag">Docker Compose</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Notable design decisions</h2>
+
+      <div class="decision">
+        <h3>Gates are server-side graph interrupts, not UI state</h3>
+        <p>The plan-review gate pauses execution inside the LangGraph FSM itself. The UI just reflects that paused state rather than being the thing enforcing the pause, so the gate holds even if the browser tab is closed and reopened.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Claude runs as a CLI subprocess, not via the SDK</h3>
+        <p>Spawning <code>claude</code> directly gives the agent its full native tool access (Bash, file edits, etc.) for free, instead of reimplementing a tool-use loop and each tool by hand against the API.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Per-session worktree isolation</h3>
+        <p>Every session gets its own git worktree and branch, so an agent mid-implementation never collides with whatever is checked out in the main working copy &mdash; and the isolated path is one click away to copy.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Buffer, then flush, event persistence</h3>
+        <p>SSE events are kept in memory while a run is live, for low-latency streaming, and only written to PostgreSQL on completion or interrupt &mdash; durable history without a database write on every streamed token.</p>
+      </div>
+    </section>
+
+    <footer>
+      &copy; <span id="year"></span> Doanh Luong. Deployed with GitHub Pages.
+    </footer>
+  </div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    var navToggle = document.getElementById('navToggle');
+    var navMenu = document.getElementById('navMenu');
+    navToggle.addEventListener('click', function () {
+      var isOpen = !navMenu.hidden;
+      navMenu.hidden = isOpen;
+      navToggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+    navMenu.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        navMenu.hidden = true;
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    var themeToggle = document.getElementById('themeToggle');
+    function currentTheme() {
+      var attr = document.documentElement.getAttribute('data-theme');
+      if (attr === 'light' || attr === 'dark') return attr;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function updateThemeIcon() {
+      themeToggle.textContent = currentTheme() === 'dark' ? '☀️' : '🌙';
+    }
+    themeToggle.addEventListener('click', function () {
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      updateThemeIcon();
+    });
+    updateThemeIcon();
+  </script>
+</body>
+</html>

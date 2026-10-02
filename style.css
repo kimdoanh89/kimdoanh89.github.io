@@ -159,7 +159,8 @@ h1 {
   font-size: 1.02rem;
   line-height: 1.55;
   margin: 8px 0 0;
-  max-width: 62ch;
+  text-align: justify;
+  hyphens: auto;
 }
 section {
   margin-bottom: 44px;
@@ -174,8 +175,9 @@ h2 {
 p.body {
   line-height: 1.65;
   color: var(--text);
-  max-width: 64ch;
   margin: 0;
+  text-align: justify;
+  hyphens: auto;
 }
 
 .entry {
@@ -216,6 +218,8 @@ p.body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  text-align: justify;
+  hyphens: auto;
 }
 .entry ul li::marker { color: var(--accent); }
 
@@ -270,6 +274,8 @@ p.body {
   color: var(--muted);
   font-size: 0.9rem;
   line-height: 1.5;
+  text-align: justify;
+  hyphens: auto;
 }
 
 .links {
@@ -334,7 +340,7 @@ footer {
   border-radius: var(--radius);
   padding: 18px 20px;
 }
-.callout p { margin: 0; }
+.callout p { margin: 0; text-align: justify; hyphens: auto; }
 .decision {
   padding: 16px 0;
   border-top: 1px solid var(--border);
@@ -349,4 +355,6 @@ footer {
   color: var(--muted);
   font-size: 0.93rem;
   line-height: 1.6;
+  text-align: justify;
+  hyphens: auto;
 }

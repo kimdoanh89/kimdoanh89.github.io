@@ -358,3 +358,21 @@ footer {
   text-align: justify;
   hyphens: auto;
 }
+
+.diagram {
+  margin: 18px 0 0;
+}
+.diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.diagram figcaption {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}

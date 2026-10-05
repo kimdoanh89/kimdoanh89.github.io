@@ -70,7 +70,7 @@
       </div>
 
       <figure class="diagram">
-        <svg viewBox="0 0 480 630" role="img" aria-label="Architecture diagram: the browser talks to the Express backend over REST and SSE; the backend's LangGraph orchestrator pauses at a server-side gate on the plan stage, then spawns a claude CLI subprocess per stage inside an isolated git worktree, with an OAuth MCP connector for tools like Jira; SSE events buffer in memory and flush to PostgreSQL only on completion or interrupt.">
+        <svg viewBox="0 0 480 630" role="img" aria-label="Architecture diagram: the browser talks to the Express backend over REST and SSE; the backend's LangGraph orchestrator pauses at a server-side gate on the plan stage, and verify can loop back into implement for up to two retries before advancing; each stage spawns a claude CLI subprocess inside an isolated git worktree, with an OAuth MCP connector for tools like Jira; SSE events buffer in memory and flush to PostgreSQL only on completion or interrupt.">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)" />
@@ -103,6 +103,9 @@
           <text x="170" y="254" text-anchor="middle" font-size="9.5" fill="var(--accent)">plan-gate: pauses here</text>
           <line x1="164" y1="260" x2="164" y2="272" stroke="var(--accent)" stroke-width="3" />
           <line x1="176" y1="260" x2="176" y2="272" stroke="var(--accent)" stroke-width="3" />
+
+          <text x="275" y="250" text-anchor="middle" font-size="9" fill="var(--muted)">retry (&#8804;2&times;)</text>
+          <path d="M 310 284 Q 275 258 240 284" fill="none" stroke="var(--muted)" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#arrow)" />
 
           <line x1="112" y1="296" x2="158" y2="296" stroke="var(--muted)" marker-end="url(#arrow)" />
           <line x1="182" y1="296" x2="228" y2="296" stroke="var(--muted)" marker-end="url(#arrow)" />
@@ -153,7 +156,7 @@
           <text x="240" y="576" text-anchor="middle" font-size="12" fill="var(--text)" font-weight="600">PostgreSQL (Prisma)</text>
           <text x="240" y="592" text-anchor="middle" font-size="9.5" fill="var(--muted)">sessions · tasks · events</text>
         </svg>
-        <figcaption>Each session spawns an isolated <code>claude</code> subprocess inside its own git worktree; the plan stage pauses as a server-side graph interrupt, not a UI lock, and SSE events stay buffered in memory until a flush on completion or interrupt.</figcaption>
+        <figcaption>Each session spawns an isolated <code>claude</code> subprocess inside its own git worktree; the plan stage pauses as a server-side graph interrupt, not a UI lock; verify loops back into implement for up to two retries before advancing; and SSE events stay buffered in memory until a flush on completion or interrupt.</figcaption>
       </figure>
 
       <div class="tag-row" style="margin-top: 14px;">
